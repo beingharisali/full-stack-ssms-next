@@ -5,54 +5,54 @@ import { useAuthContext } from "../context/AuthContext";
 // import Link from "next/link";
 
 export default function RegisterPage() {
-	const { registerUser } = useAuthContext();
-	const [form, setFormData] = useState({
-		firstName: "",
-		lastName: "",
-		role: "",
-		email: "",
-		password: "",
-		confirmPassword: "",
-	});
-	const [loading, setLoading] = useState(false);
+  const { registerUser } = useAuthContext();
+  const [form, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    role: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [loading, setLoading] = useState(false);
 
-	function handleChange(
-		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-	) {
-		const { name, value } = e.target;
-		setFormData((prev) => ({ ...prev, [name]: value }));
-	}
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }
 
-	async function handleSubmit(e: React.FormEvent) {
-		e.preventDefault();
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
 
-		if (form.password !== form.confirmPassword) {
-			alert("Passwords do not match!");
-			return;
-		}
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
 
-		if (!form.role) {
-			alert("Please select a role!");
-			return;
-		}
+    if (!form.role) {
+      alert("Please select a role!");
+      return;
+    }
 
-		try {
-			setLoading(true);
-			await registerUser(
-				form.firstName,
-				form.lastName,
-				form.email,
-				form.password,
-				form.role as any
-			);
-		} catch (error) {
-			const e = error as { response?: { data?: { msg?: string } } };
-			alert(e.response?.data?.msg || "Registration failed");
-			console.error("Registration failed:", error);
-		} finally {
-			setLoading(false);
-		}
-	}
+    try {
+      setLoading(true);
+      await registerUser(
+        form.firstName,
+        form.lastName,
+        form.email,
+        form.password,
+        form.role as any
+      );
+    } catch (error) {
+      const e = error as { response?: { data?: { msg?: string } } };
+      alert(e.response?.data?.msg || "Registration failed");
+      console.error("Registration failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <section className="text-gray-700 bg-gray-100 body-font min-h-screen flex items-center justify-center">
@@ -119,24 +119,20 @@ export default function RegisterPage() {
               />
             </div>
 
-           	<div  className="p-2 w-1/2">
-							<label className="leading-7 text-sm text-gray-600">
-								Role
-							</label>
-							<select
-								name="role"
-								required
-								value={form.role}
-								onChange={handleChange}
-			             className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out">
-								<option value="">Select Role</option>
-								<option value="admin">Admin</option>
-								<option value="agent">Agent</option>
-								<option value="user">User</option>
-							</select>
-						</div>
-
-            
+            <div className="p-2 w-1/2">
+              <label className="leading-7 text-sm text-gray-600">Role</label>
+              <select
+                name="role"
+                required
+                value={form.role}
+                onChange={handleChange}
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out">
+                <option value="">Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="agent">Agent</option>
+                <option value="user">User</option>
+              </select>
+            </div>
 
             <div className="p-2 w-1/2">
               <label
@@ -172,7 +168,6 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 className={`w-full bg-gray-200 rounded border  focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out`}
               />
-              
             </div>
 
             <div className="p-2 w-full">
@@ -182,10 +177,16 @@ export default function RegisterPage() {
                 Sign Up
               </button>
             </div>
-<div className=" text-center w-full ">
-  <p>Already have an accout? <a className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200" href="/login">Login</a></p>
-</div>
-          
+            <div className=" text-center w-full ">
+              <p>
+                Already have an accout?{" "}
+                <a
+                  className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200"
+                  href="/login">
+                  Login
+                </a>
+              </p>
+            </div>
           </form>
         </div>
       </div>

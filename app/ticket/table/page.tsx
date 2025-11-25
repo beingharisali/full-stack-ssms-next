@@ -86,87 +86,176 @@
 // }
 
 // export default page;
+
+
+
+// "use client";
+
+// import React, { useState } from "react";
+// import { StatusChip } from "@/app/components/StatusChip";
+// import { TicketStatus } from "@/types/ticket";
+// import  pagination  from "@/app/ticket/page"
+
+// const TicketsPage = () => {
+//   const [status, setStatus] = useState<string>("all");
+//   const [search, setSearch] = useState<string>("");
+//   const [limit, setLimit] = useState<number>(5);
+//   const [loading, setLoading] = useState<boolean>(false);
+//   const [data, setData] = useState<any[]>([]);
+//   const [ticket, setTicket] = useState<any>(null);
+//   return (
+//     <div className="p-6">
+//       {/* Filters */}
+//       <div className="flex gap-3 mb-4">
+//         {/* <select
+//           className="border px-3 py-2 rounded"
+//           value={status}
+//           onChange={(e) => setStatus(e.target.value)}
+//         >
+//           <option value="all">All</option>
+//           <option value="open">Open</option>
+//           <option value="in_progress">In Progress</option>
+//           <option value="resolved">Resolved</option>
+//         </select> */}
+
+//         {/* <input
+//           className="border px-3 py-2 rounded"
+//           placeholder="Search ticket..."
+//           value={search}
+//           onChange={(e) => setSearch(e.target.value)}
+//         /> */}
+
+//         {/* <select
+//           className="border px-3 py-2 rounded"
+//           value={limit}
+//           onChange={(e) => setLimit(Number(e.target.value))}
+//         >
+//           <option value={5}>5</option>
+//           <option value={10}>10</option>
+//           <option value={25}>25</option>
+//         </select> */}
+//       </div>
+
+//       {/* Table */}
+//       <div className="border rounded overflow-x-auto">
+//         <table className="w-full text-sm">
+//           <thead className="bg-gray-100">
+//             <tr>
+//               <th className="text-left p-3"> category</th>
+//               <th className="text-left p-3">title</th>
+//               <th className="text-left p-3">desc</th>
+//               <th className="text-left p-3">priority</th>
+//               <th className="text-left p-3">status</th>
+//               <th className="text-left p-3">price</th>
+//               <th className="text-left p-3">createdBy</th>
+//               <th className="text-left p-3">created</th>
+
+//             </tr>
+//           </thead>
+
+//   <tbody>
+//     {loading ? (
+//       <tr>
+//         <td className="p-5 text-center" colSpan={8}>
+//           Loading...
+//         </td>
+//       </tr>
+//     ) : (
+//       data.map((th) => (
+//         <tr key={th._id} className="border-b">
+//           <td className="p-3">{th.category}</td>
+//           <td className="p-3">{th.title}</td>
+//           <td className="p-3">{th.desc}</td>
+//           <td className="p-3">{th.priority}</td>
+//           <td className="p-3">
+//             <StatusChip status={th.status} />
+//           </td>
+//           <td className="p-3">{th.price}</td>
+//           <td className="p-3">
+//             {th.createdAt
+//               ? new Date(th.createdAt).toLocaleString()
+//               : "N/A"}
+//           </td>
+//         </tr>
+//       ))
+//     )}
+//   </tbody>
+//         </table>
+//       </div>
+//       <div>
+      
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TicketsPage;
+
+
+
 "use client";
 
 import React, { useState } from "react";
 import { StatusChip } from "@/app/components/StatusChip";
+import Pagination from "@/app/components/pagination/page";
+import { useTickets } from "@/lib/hooks/useTickets";
 
 const TicketsPage = () => {
-  const [status, setStatus] = useState("all");
-  const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(5);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<any>(null);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [status] = useState("all");
+  const [search] = useState("");
+
+  const { data, loading } = useTickets(page, limit, status, search);
 
   return (
     <div className="p-6">
-      {/* Filters */}
-      <div className="flex gap-3 mb-4">
-        <select
-          className="border px-3 py-2 rounded"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option value="all">All</option>
-          <option value="open">Open</option>
-          <option value="in_progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-        </select>
-
-        <input
-          className="border px-3 py-2 rounded"
-          placeholder="Search ticket..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <select
-          className="border px-3 py-2 rounded"
-          value={limit}
-          onChange={(e) => setLimit(Number(e.target.value))}
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-        </select>
-      </div>
-
-      {/* Table */}
-      <div className="border rounded overflow-x-auto">
+ <div className="text-3xl text-blue-500 text-center">Ticket Details</div>
+      <div className=" rounded overflow-x-auto">
+       
         <table className="w-full text-sm">
-          <thead className="bg-gray-100">
+          <thead className="bg-cyan-500">
             <tr>
-              <th className="text-left p-3">Title</th>
-              <th className="text-left p-3">Status</th>
-              <th className="text-left p-3">Created</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Title</th>
+              <th className="p-3">Desc</th>
+              <th className="p-3">Priority</th>
+              <th className="p-3">Status</th>
+              <th className="p-3">Price</th>
+              <th className="p-3">Created</th>
             </tr>
           </thead>
 
           <tbody>
             {loading ? (
               <tr>
-                <td className="p-5 text-center" colSpan={3}>
+                <td className="p-5 text-center" colSpan={8}>
                   Loading...
                 </td>
               </tr>
             ) : (
-              data?.docs?.map((th: any) => (
-                <tr key={th._id} className="border-b">
-                  <td className="p-3">{th.title}</td>
+              data?.docs?.map((ticket: any) => (
+                <tr key={ticket._id} className="border-b">
+                  <td className="p-3">{ticket.category}</td>
+                  <td className="p-3">{ticket.title}</td>
+                  <td className="p-3">{ticket.desc}</td>
+                  <td className="p-3">{ticket.priority}</td>
                   <td className="p-3">
-                    <StatusChip status={th.status} />
+                    <StatusChip status={ticket.status} />
                   </td>
-                  <td className="p-3">
-                    {th.createdAt
-                      ? new Date(th.createdAt).toLocaleString()
-                      : "N/A"}
-                  </td>
+                  <td className="p-3">{ticket.price}</td>
+                  <td className="p-3">{new Date(ticket.createdAt).toLocaleString()}</td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {data && (
+        <Pagination page={page} setPage={setPage} data={data} />
+      )}
     </div>
   );
 };

@@ -36,7 +36,7 @@ async function handleSubmit(e: React.FormEvent) {
     await Create(form);
 
     alert("Ticket created successfully!");
-    router.push("/tickets");
+    router.push("/ticket/table");
 
   } catch (error: any) {
     // console.error("Error:", error);

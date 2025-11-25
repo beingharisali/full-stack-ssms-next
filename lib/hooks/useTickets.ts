@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
-import  {useTickets } from "../hooks/useTickets";
-import { TicketsResponse, TicketStatus } from "../types/ticket";
 
-export function useTickets(
-  page: number,
-  limit: number,
-  status: TicketStatus | "all",
-  search: string
-) {
-  const [data, setData] = useState<TicketsResponse | null>(null);
+export const useTickets = (page: number, limit: number, status: string, search: string) => {
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    async function fetchTickets() {
+    const fetchTickets = async () => {
       setLoading(true);
-
-      const res = await api.get<TicketsResponse>("/tickets", {
-        params: { page, limit, status, search },
-      });
-
-      setData(res.data);
+      try {
+        const res = await fetch(
+          `/api/ticket/tickets?page=${page}&limit=${limit}&status=${status}&search=${search}`
+        );
+        const json = await res.json();
+        setData(json); // json MUST contain docs, hasNextPage, hasPrevPage etc.
+      } catch (err) {
+        console.log("Error fetching tickets", err);
+      }
       setLoading(false);
-    }
+    };
 
     fetchTickets();
   }, [page, limit, status, search]);
 
   return { data, loading };
-}
+};

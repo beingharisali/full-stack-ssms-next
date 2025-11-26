@@ -34,7 +34,7 @@ export default function Nav() {
           </nav>
 
           <button className="inline-flex items-center bg-gray-700 border-0 py-2 px-5 focus:outline-none hover:bg-gray-900 rounded-lg text-white text-base mt-4 md:mt-0 transition duration-200">
-            <a href="../login">Login</a>
+            <a href="/login">Login</a>
             <svg
               fill="none"
               stroke="currentColor"

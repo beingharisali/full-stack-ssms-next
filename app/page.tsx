@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-// import Link from "next/link";
 
 export default function RegisterPage() {
   const { registerUser } = useAuthContext();
+
   const [form, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,6 +14,14 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
   });
+
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "",
+  });
+
   const [loading, setLoading] = useState(false);
 
   function handleChange(
@@ -23,18 +31,43 @@ export default function RegisterPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
+  function validateForm() {
+    let newErrors: any = {};
+    let isValid = true;
+
+    // EMAIL VALIDATION
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(form.email)) {
+      newErrors.email = "Enter a valid email address.";
+      isValid = false;
+    }
+
+    // PASSWORD MINIMUM LENGTH
+    if (form.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long.";
+      isValid = false;
+    }
+
+    // PASSWORD MATCH
+    if (form.password !== form.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+      isValid = false;
+    }
+
+    // ROLE REQUIRED
+    if (!form.role) {
+      newErrors.role = "Please select a role.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    if (!form.role) {
-      alert("Please select a role!");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       setLoading(true);
@@ -61,64 +94,55 @@ export default function RegisterPage() {
           <h1 className="sm:text-3xl text-2xl font-semibold title-font mb-4 text-gray-800">
             Sign Up
           </h1>
-          <p className="text-gray-500 text-sm">
-            Create your account to get started
-          </p>
+          <p className="text-gray-500 text-sm">Create your account to get started</p>
         </div>
 
         <div className="lg:w-1/2 md:w-2/3 mx-auto bg-white rounded-2xl shadow-md p-8">
           <form onSubmit={handleSubmit} className="flex flex-wrap -m-2">
+
+            {/* FIRST NAME */}
             <div className="p-2 w-1/2">
-              <label
-                htmlFor="firstName"
-                className="leading-7 text-sm text-gray-600">
-                First Name:
-              </label>
+              <label className="leading-7 text-sm text-gray-600">First Name:</label>
               <input
                 type="text"
-                id="firstName"
                 name="firstName"
                 required
                 value={form.firstName}
                 onChange={handleChange}
-                className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out"
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:ring-2 focus:ring-gray-400 py-2 px-3"
               />
             </div>
 
+            {/* LAST NAME */}
             <div className="p-2 w-1/2">
-              <label
-                htmlFor="lastName"
-                className="leading-7 text-sm text-gray-600">
-                Last Name:
-              </label>
+              <label className="leading-7 text-sm text-gray-600">Last Name:</label>
               <input
                 type="text"
-                id="lastName"
                 name="lastName"
                 required
                 value={form.lastName}
                 onChange={handleChange}
-                className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out"
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:ring-2 focus:ring-gray-400 py-2 px-3"
               />
             </div>
 
+            {/* EMAIL */}
             <div className="p-2 w-1/2">
-              <label
-                htmlFor="email"
-                className="leading-7 text-sm text-gray-600">
-                Email:
-              </label>
+              <label className="leading-7 text-sm text-gray-600">Email:</label>
               <input
                 type="email"
-                id="email"
                 name="email"
                 required
                 value={form.email}
                 onChange={handleChange}
-                className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out"
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:ring-2 focus:ring-gray-400 py-2 px-3"
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+              )}
             </div>
 
+            {/* ROLE */}
             <div className="p-2 w-1/2">
               <label className="leading-7 text-sm text-gray-600">Role</label>
               <select
@@ -126,63 +150,66 @@ export default function RegisterPage() {
                 required
                 value={form.role}
                 onChange={handleChange}
-                className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out">
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:ring-2 focus:ring-gray-400 py-2 px-3"
+              >
                 <option value="">Select Role</option>
                 <option value="admin">Admin</option>
                 <option value="agent">Agent</option>
                 <option value="user">User</option>
               </select>
+              {errors.role && (
+                <p className="text-red-500 text-xs mt-1">{errors.role}</p>
+              )}
             </div>
 
+            {/* PASSWORD */}
             <div className="p-2 w-1/2">
-              <label
-                htmlFor="password"
-                className="leading-7 text-sm text-gray-600">
-                Password:
-              </label>
+              <label className="leading-7 text-sm text-gray-600">Password:</label>
               <input
                 type="password"
-                id="password"
                 name="password"
                 required
                 value={form.password}
-                placeholder="Enter your password"
                 onChange={handleChange}
-                className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out"
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:ring-2 focus:ring-gray-400 py-2 px-3"
               />
+              {errors.password && (
+                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+              )}
             </div>
 
+            {/* CONFIRM PASSWORD */}
             <div className="p-2 w-1/2">
-              <label
-                htmlFor="confirmPassword"
-                className="leading-7 text-sm text-gray-600">
-                Confirm Password:
-              </label>
+              <label className="leading-7 text-sm text-gray-600">Confirm Password:</label>
               <input
                 type="password"
-                id="confirmPassword"
                 name="confirmPassword"
                 required
                 value={form.confirmPassword}
-                placeholder="Confirm your password"
                 onChange={handleChange}
-                className={`w-full bg-gray-200 rounded border  focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-base outline-none text-gray-900 py-2 px-3 leading-8 transition duration-200 ease-in-out`}
+                className="w-full bg-gray-200 rounded border border-gray-300 focus:ring-2 focus:ring-gray-400 py-2 px-3"
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
+              )}
             </div>
 
+            {/* SUBMIT BUTTON */}
             <div className="p-2 w-full">
               <button
                 type="submit"
-                className="flex mx-auto text-white bg-gray-700 border-0 py-2 px-10 focus:outline-none hover:bg-gray-900 rounded-lg text-lg transition duration-200">
-                Sign Up
+                disabled={loading}
+                className="flex mx-auto text-white bg-gray-700 py-2 px-10 rounded-lg text-lg hover:bg-gray-900 transition"
+              >
+                {loading ? "Processing..." : "Sign Up"}
               </button>
             </div>
-            <div className=" text-center w-full ">
+
+            {/* LOGIN LINK */}
+            <div className="text-center w-full">
               <p>
-                Already have an accout?{" "}
-                <a
-                  className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200"
-                  href="/login">
+                Already have an account?{" "}
+                <a className="text-gray-800 hover:text-blue-500" href="/login">
                   Login
                 </a>
               </p>

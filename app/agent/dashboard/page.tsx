@@ -1,16 +1,24 @@
 import Footer from "@/app/components/footer";
-import Hero from "@/app/components/hero";
 import Nav from "@/app/components/nav";
+import Link from "next/link";
+
 function Page() {
   return (
-    <div>
+    <div className="min-h-screen bg-[#060C19] text-white">
       <Nav />
-      <h1 className="text-center bg-black text-blue-50">
-        WELCOME TO AGENT PAGE
-      </h1>
-      <Hero />
+      <div className="flex flex-col items-center justify-center min-h-screen py-2">
+        <h1 className="text-4xl font-bold mb-8">Agent Dashboard</h1>
+        <p className="text-xl mb-8">Welcome to the Agent Support Portal</p>
+        <Link 
+          href="/agent/tickets"
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 text-lg font-semibold"
+        >
+          View Assigned Tickets
+        </Link>
+      </div>
       <Footer />
     </div>
   );
 }
+
 export default Page;

@@ -1,15 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-// import Link from "next/link";
+import type { UserRole } from "../types/user";
 
 export default function RegisterPage() {
   const { registerUser } = useAuthContext();
   const [form, setFormData] = useState({
     firstName: "",
     lastName: "",
-    role: "",
+    role: "client",
     email: "",
     password: "",
     confirmPassword: "",
@@ -43,7 +44,7 @@ export default function RegisterPage() {
         form.lastName,
         form.email,
         form.password,
-        form.role as any
+        form.role as UserRole
       );
     } catch (error) {
       const e = error as { response?: { data?: { msg?: string } } };
@@ -130,7 +131,7 @@ export default function RegisterPage() {
                 <option value="">Select Role</option>
                 <option value="admin">Admin</option>
                 <option value="agent">Agent</option>
-                <option value="user">User</option>
+                <option value="client">Client</option>
               </select>
             </div>
 
@@ -173,18 +174,19 @@ export default function RegisterPage() {
             <div className="p-2 w-full">
               <button
                 type="submit"
-                className="flex mx-auto text-white bg-gray-700 border-0 py-2 px-10 focus:outline-none hover:bg-gray-900 rounded-lg text-lg transition duration-200">
-                Sign Up
+                disabled={loading}
+                className="flex mx-auto text-white bg-gray-700 border-0 py-2 px-10 focus:outline-none hover:bg-gray-900 rounded-lg text-lg transition duration-200 disabled:opacity-50">
+                {loading ? "Creating..." : "Sign Up"}
               </button>
             </div>
             <div className=" text-center w-full ">
               <p>
-                Already have an accout?{" "}
-                <a
+                Already have an account?{" "}
+                <Link
                   className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200"
                   href="/login">
                   Login
-                </a>
+                </Link>
               </p>
             </div>
           </form>

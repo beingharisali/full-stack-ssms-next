@@ -3,19 +3,15 @@
 
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import axios from "axios";
 
-export default function RegisterPage() {
+export default function LoginPage() {
 	const { loginUser } = useAuthContext();
-	const router = useRouter();
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
-		role: "",
 	});
 
 	const [loading, setLoading] = useState(false);
@@ -32,11 +28,11 @@ export default function RegisterPage() {
 
 		try {
 			setLoading(true);
-			await loginUser(formData.email, formData.password, formData.role as any);
+			await loginUser(formData.email, formData.password);
 		} catch (error) {
 			const e = error as { response?: { data?: { msg?: string } } };
-			alert(e.response?.data?.msg || "Registration failed");
-			console.error("Registration failed:", error);
+			alert(e.response?.data?.msg || "Login failed");
+			console.error("Login failed:", error);
 		} finally {
 			setLoading(false);
 		}
@@ -90,11 +86,16 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full text-white bg-gray-700 hover:bg-gray-900 py-2 rounded-lg text-lg transition duration-200">
-            Login
+            disabled={loading}
+            className="w-full text-white bg-gray-700 hover:bg-gray-900 py-2 rounded-lg text-lg transition duration-200 disabled:opacity-50">
+            {loading ? "Signing in..." : "Login"}
           </button>
 <div className=" text-center w-full ">
-  <p>Doesn't have an accout? <a className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200" href="/">Sign Up</a></p>
+  <p>Doesn{"'"}t have an account?{" "}
+    <Link className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200" href="/">
+      Sign Up
+    </Link>
+  </p>
 </div>
           
         </form>

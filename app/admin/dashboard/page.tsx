@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { TicketTable } from "@/components/tickets/TicketTable";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { RoleGuard } from "@/components/auth/RoleGuard";
 import { getTickets } from "@/services/ticket.api";
 import { getAllUsers } from "@/services/auth.api";
 import { TicketType } from "@/types/ticket";
@@ -46,7 +47,8 @@ export default function AdminDashboard() {
 	}, []);
 
 	return (
-		<DashboardLayout>
+		<RoleGuard allowedRoles={["admin"]}>
+			<DashboardLayout>
 			<div className="space-y-8">
 				{/* Header */}
 				<div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl text-white p-6 sm:p-8">
@@ -152,6 +154,7 @@ export default function AdminDashboard() {
 					</div>
 				</div>
 			</div>
-		</DashboardLayout>
+			</DashboardLayout>
+		</RoleGuard>
 	);
 }

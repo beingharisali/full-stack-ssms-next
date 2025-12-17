@@ -157,27 +157,25 @@ export function TicketForm({ onCreated }: TicketFormProps) {
 							<option value="high">🔴 High Priority</option>
 						</select>
 					</div>
-					{user?.role === 'admin' && (
-						<div className="space-y-2">
-							<label className="block text-sm font-medium text-gray-700">
-								Assign to Agent
-							</label>
-							<select
-								name="assignedTo"
-								value={form.assignedTo || ""}
-								onChange={handleChange}
-								className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-								<option value="">Unassigned</option>
-								{agents.map((agent) => (
-									<option key={agent._id} value={agent._id}>
-										{`${agent.firstName ?? ""} ${agent.lastName ?? ""}`.trim() ||
-											agent.name ||
-											agent.email}
-									</option>
-								))}
-							</select>
-						</div>
-					)}
+					<div className="space-y-2">
+						<label className="block text-sm font-medium text-gray-700">
+							Assign to Agent {user?.role !== 'admin' && '(Optional)'}
+						</label>
+						<select
+							name="assignedTo"
+							value={form.assignedTo || ""}
+							onChange={handleChange}
+							className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
+							<option value="">Unassigned</option>
+							{agents.map((agent) => (
+								<option key={agent._id} value={agent._id}>
+									{`${agent.firstName ?? ""} ${agent.lastName ?? ""}`.trim() ||
+										agent.name ||
+									agent.email}
+								</option>
+							))}
+						</select>
+					</div>
 					<div className="space-y-2">
 						<label className="block text-sm font-medium text-gray-700">
 							Attachments

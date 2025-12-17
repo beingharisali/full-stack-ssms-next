@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/context/AuthContext";
-import { NotificationBell } from "../notifications/NotificationBell";
+import { NotificationCenter } from "../notifications";
 import { useState } from "react";
 
 export function Header() {
@@ -25,7 +25,7 @@ export function Header() {
 					</div>
 					
 					<div className="flex items-center space-x-3">
-						<NotificationBell />
+						<NotificationCenter />
 						
 						<div className="relative">
 							<button

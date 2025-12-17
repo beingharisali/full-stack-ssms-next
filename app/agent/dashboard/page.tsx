@@ -2,10 +2,12 @@
 
 import { TicketTable } from "@/components/tickets/TicketTable";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { RoleGuard } from "@/components/auth/RoleGuard";
 
 export default function AgentDashboard() {
 	return (
-		<DashboardLayout>
+		<RoleGuard allowedRoles={["agent"]}>
+			<DashboardLayout>
 			<div className="space-y-8">
 				{/* Header */}
 				<div className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-700 rounded-2xl text-white p-6 sm:p-8">
@@ -43,6 +45,7 @@ export default function AgentDashboard() {
 					</div>
 				</div>
 			</div>
-		</DashboardLayout>
+			</DashboardLayout>
+		</RoleGuard>
 	);
 }

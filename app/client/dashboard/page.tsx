@@ -4,12 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { TicketTable } from "@/components/tickets/TicketTable";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { RoleGuard } from "@/components/auth/RoleGuard";
 
 export default function ClientDashboard() {
 	const [refreshKey, setRefreshKey] = useState(0);
 
 	return (
-		<DashboardLayout>
+		<RoleGuard allowedRoles={["client"]}>
+			<DashboardLayout>
 			<div className="space-y-8">
 				{/* Welcome Section */}
 				<div className="bg-gradient-to-br from-purple-600 via-pink-600 to-red-500 rounded-2xl text-white p-6 sm:p-8">
@@ -49,6 +51,7 @@ export default function ClientDashboard() {
 					</div>
 				</div>
 			</div>
-		</DashboardLayout>
+			</DashboardLayout>
+		</RoleGuard>
 	);
 }

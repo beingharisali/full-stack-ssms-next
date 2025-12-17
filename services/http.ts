@@ -5,19 +5,32 @@ const baseURL =
   "http://localhost:5000/api/v1";
 
 const http = axios.create({
-  baseURL,
-  timeout: 15000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-http.interceptors.request.use((config) => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+	baseURL,
+	timeout: 15000,
 });
 
+http.interceptors.request.use((config) => {
+	config.headers = config.headers ?? {};
+	const token =
+		typeof window !== "undefined" ? localStorage.getItem("token") : null;
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
+	}
+
+	if (
+		config.data &&
+		typeof window !== "undefined" &&
+		typeof FormData !== "undefined" &&
+		config.data instanceof FormData
+	) {
+		// Let the browser set the correct multipart boundary
+		delete config.headers["Content-Type"];
+	} else {
+		config.headers["Content-Type"] = "application/json";
+	}
+
+	return config;
+});
+
+export { http };
 export default http;

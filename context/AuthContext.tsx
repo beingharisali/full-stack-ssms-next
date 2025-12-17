@@ -1,11 +1,17 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
 	register as registerApi,
 	login as loginApi,
-	// getProfile,
+	getProfile,
 	logoutApi,
 } from "../services/auth.api";
 import type { User, UserRole } from "../types/user";
@@ -20,9 +26,9 @@ interface AuthContextType {
 		password: string,
 		role: UserRole
 	) => Promise<void>;
-	loginUser: (email: string, password: string, role: UserRole) => Promise<void>;
+	loginUser: (email: string, password: string) => Promise<void>;
 	logoutUser: () => Promise<void>;
-	// refreshProfile: () => Promise<void>;
+	refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,37 +50,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				return "/admin/dashboard";
 			case "agent":
 				return "/agent/dashboard";
-			case "user":
-				return "/user/dashboard";
+			case "client":
+				return "/client/dashboard";
 			default:
 				return "/";
 		}
 	};
 
-	// const refreshProfile = async (): Promise<void> => {
-	//   try {
-	//     const res = await getProfile();
-	//     if (res?.user) {
-	//       setUser(res.user);
-	//     } else {
-	//       setUser(null);
-	//     }
-	//   } catch {
-	//     setUser(null);
-	//   }
-	// };
+	const refreshProfile = useCallback(async (): Promise<void> => {
+		try {
+			const res = await getProfile();
+			if (res?.user) {
+				setUser(res.user);
+			} else {
+				setUser(null);
+			}
+		} catch {
+			setUser(null);
+		}
+	}, []);
 
-	// useEffect(() => {
-	//   (async () => {
-	//     setLoading(true);
-	//     const token = localStorage.getItem("token");
+	useEffect(() => {
+		(async () => {
+			setLoading(true);
+			const token =
+				typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-	//     if (token) {
-	//       await refreshProfile();
-	//     }
-	//     setLoading(false);
-	//   })();
-	// }, []);
+			if (token) {
+				await refreshProfile();
+			}
+			setLoading(false);
+		})();
+	}, [refreshProfile]);
 
 	const registerUser = async (
 		firstName: string,
@@ -83,26 +90,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		password: string,
 		role: UserRole
 	) => {
-		const res = await registerApi(
+		const res = await registerApi({
 			firstName,
 			lastName,
 			email,
 			password,
-			role as string
-		);
+			role
+		});
 
 		if (res.token) {
 			localStorage.setItem("token", res.token);
 		}
 
 		setUser(res.user);
-		console.log("res.user", res);
-
 		router.replace(getRedirectPath(res.user.role));
 	};
-	const loginUser = async (email: string, password: string, role: UserRole) => {
+	const loginUser = async (email: string, password: string) => {
 		try {
-			const res = await loginApi(email, password, role as string);
+			const res = await loginApi({ email, password });
 
 			if (res?.token) {
 				localStorage.setItem("token", res.token);
@@ -121,8 +126,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	};
 	const logoutUser = async () => {
 		await logoutApi();
+		localStorage.removeItem("token");
 		setUser(null);
-		router.replace("/");
+		router.replace("/login");
 	};
 
 	return (
@@ -133,7 +139,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				registerUser,
 				loginUser,
 				logoutUser,
-				// refreshProfile,
+				refreshProfile,
 			}}>
 			{children}
 		</AuthContext.Provider>

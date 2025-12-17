@@ -1,18 +1,17 @@
+
+
+
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import axios from "axios";
 
 export default function LoginPage() {
 	const { loginUser } = useAuthContext();
-	const router = useRouter();
 	const [formData, setFormData] = useState({
 		email: "",
 		password: "",
-		role: "",
 	});
 
 	const [loading, setLoading] = useState(false);
@@ -29,7 +28,7 @@ export default function LoginPage() {
 
 		try {
 			setLoading(true);
-			await loginUser(formData.email, formData.password, formData.role as any);
+			await loginUser(formData.email, formData.password);
 		} catch (error) {
 			const e = error as { response?: { data?: { msg?: string } } };
 			alert(e.response?.data?.msg || "Login failed");
@@ -83,34 +82,20 @@ export default function LoginPage() {
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="role"
-              className="block text-sm font-medium text-gray-500 mb-1">
-              Role
-            </label>
-            <select
-              id="role"
-              name="role"
-              required
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full bg-gray-200 rounded border border-gray-300 focus:border-gray-500 focus:ring-2 focus:ring-gray-400 text-gray-900 py-2 px-3 outline-none transition duration-200 ease-in-out"
-            >
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="agent">Agent</option>
-              <option value="user">User</option>
-            </select>
-          </div>
+      
 
           <button
             type="submit"
-            className="w-full text-white bg-gray-700 hover:bg-gray-900 py-2 rounded-lg text-lg transition duration-200">
-            Login
+            disabled={loading}
+            className="w-full text-white bg-gray-700 hover:bg-gray-900 py-2 rounded-lg text-lg transition duration-200 disabled:opacity-50">
+            {loading ? "Signing in..." : "Login"}
           </button>
 <div className=" text-center w-full ">
-  <p>Doesn't have an account? <Link className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200" href="/">Sign Up</Link></p>
+  <p>Doesn{"'"}t have an account?{" "}
+    <Link className="text-gray-800  hover:text-blue-500 rounded-lg text-lg transition duration-200" href="/">
+      Sign Up
+    </Link>
+  </p>
 </div>
           
         </form>

@@ -67,77 +67,77 @@ export default function AdminDashboard() {
 				</div>
 
 				{/* KPI Cards */}
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 					<div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
 						<div className="flex items-center">
-							<div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-								<svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+								<svg className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
 								</svg>
 							</div>
-							<div className="ml-4">
-								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total</p>
-								<p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalTickets}</p>
+							<div className="ml-3 sm:ml-4">
+								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Tickets</p>
+								<p className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">{stats.totalTickets}</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+					<div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
 						<div className="flex items-center">
-							<div className="p-3 rounded-full bg-red-100">
-								<span className="text-2xl">🔴</span>
+							<div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 rounded-xl flex items-center justify-center">
+								<span className="text-lg sm:text-xl">🔴</span>
 							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600">Open Tickets</p>
-								<p className="text-2xl font-bold text-red-600">{stats.openTickets}</p>
+							<div className="ml-3 sm:ml-4">
+								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Open</p>
+								<p className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600">{stats.openTickets}</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+					<div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
 						<div className="flex items-center">
-							<div className="p-3 rounded-full bg-yellow-100">
-								<span className="text-2xl">⏳</span>
+							<div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+								<span className="text-lg sm:text-xl">⏳</span>
 							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600">In Progress</p>
-								<p className="text-2xl font-bold text-yellow-600">{stats.inProgressTickets}</p>
+							<div className="ml-3 sm:ml-4">
+								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">In Progress</p>
+								<p className="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-600">{stats.inProgressTickets}</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+					<div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
 						<div className="flex items-center">
-							<div className="p-3 rounded-full bg-green-100">
-								<span className="text-2xl">✅</span>
+							<div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center">
+								<span className="text-lg sm:text-xl">✅</span>
 							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600">Resolved</p>
-								<p className="text-2xl font-bold text-green-600">{stats.resolvedTickets}</p>
+							<div className="ml-3 sm:ml-4">
+								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Resolved</p>
+								<p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">{stats.resolvedTickets}</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+					<div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
 						<div className="flex items-center">
-							<div className="p-3 rounded-full bg-purple-100">
-								<span className="text-2xl">👨‍💼</span>
+							<div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+								<span className="text-lg sm:text-xl">🎧</span>
 							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600">Total Agents</p>
-								<p className="text-2xl font-bold text-purple-600">{stats.totalAgents}</p>
+							<div className="ml-3 sm:ml-4">
+								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Agents</p>
+								<p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600">{stats.totalAgents}</p>
 							</div>
 						</div>
 					</div>
 
-					<div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+					<div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
 						<div className="flex items-center">
-							<div className="p-3 rounded-full bg-indigo-100">
-								<span className="text-2xl">👥</span>
+							<div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+								<span className="text-lg sm:text-xl">👥</span>
 							</div>
-							<div className="ml-4">
-								<p className="text-sm font-medium text-gray-600">Total Clients</p>
-								<p className="text-2xl font-bold text-indigo-600">{stats.totalClients}</p>
+							<div className="ml-3 sm:ml-4">
+								<p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Clients</p>
+								<p className="text-lg sm:text-xl lg:text-2xl font-bold text-indigo-600">{stats.totalClients}</p>
 							</div>
 						</div>
 					</div>
